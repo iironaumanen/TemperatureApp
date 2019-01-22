@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View,} from 'react-native';
 import { Key } from './WeatherKey';
 import ShowWeather from './ShowWeather';
 import SelectLocation from './SelectLocation';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
 
 export default class App extends React.Component {
   state = { 
@@ -14,14 +14,30 @@ export default class App extends React.Component {
     sunriseTime: null,
     currentLocation: null,
     updating: false,
+    lat: 0,
+    lon: 0,
     errors: false //not used currently
   };
 
 
-
-  onSwipeDown(gestureState) {
-    this.setState({updating: true})
-    this.componentDidMount
+//FIX
+  _onRefresh() { //Not very DRY, but a momentary fix for refresh function. 
+      this.setState({updating: true})
+      fetch (`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&APPID=${Key}&units=metric`) 
+      .then(data => data.json())
+      .then(json => {
+        this.setState({
+          temperature: json.main.temp,  
+          weatherType: json.weather[0].main, 
+          sunsetTime: json.sys.sunset,
+          sunriseTime: json.sys.sunrise,
+          currentLocation: json.name,
+          isLoading: false,
+          updating: false
+        });
+        //opconsole.log("toimii");
+      });
+    
   }
 
   getWeather(latitude, longitude) {
@@ -35,15 +51,17 @@ export default class App extends React.Component {
           sunriseTime: json.sys.sunrise,
           currentLocation: json.name,
           isLoading: false,
-          updating: false
         });
-        console.log(json);
+        //console.log(json);
       });
   }
 
   componentDidMount() {  //fetches location
     navigator.geolocation.getCurrentPosition(
-      location => { this.getWeather(location.coords.latitude,location.coords.longitude); },
+      location => {
+         this.setState({lat: location.coords.latitude, lon: location.coords.longitude});
+         this.getWeather(location.coords.latitude,location.coords.longitude);
+        },
       errors   => { this.setState( {errors: true }); }
     );
   }
@@ -51,21 +69,21 @@ export default class App extends React.Component {
 
   render() {
     const { isLoading, weatherType, temperature, sunsetTime, sunriseTime, currentLocation } = this.state;
-    const config = {
-      velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
-    };
     /*return (<SelectLocation></SelectLocation>)*/
     return (
-      <GestureRecognizer onSwipeDown={ (state) => this.onSwipeDown(state)} config={config} style={{flex: 1}}></GestureRecognizer>
+      
       <View style={styles.container}>
-          {isLoading ?
-            (<View style={styles.loadingContainer}>
-              <Text style={styles.loadingText}>Checking the weather!</Text> 
-            </View>) :
-            (<ShowWeather weather={ weatherType } temperature={ temperature } sunset={ sunsetTime } sunrise={ sunriseTime } location={ currentLocation }/>)
-          }
+        {isLoading ?
+              (<View style={styles.loadingContainer}>
+                <Text style={styles.loadingText}>Checking the weather!</Text> 
+              </View>) :
+              (
+              <ShowWeather weather={ weatherType } temperature={ temperature } sunset={ sunsetTime } sunrise={ sunriseTime } location={ currentLocation } update={ this._onRefresh.bind(this) }>  
+              </ShowWeather>)
+            }
       </View>
+
+      
     );
   }
 }
