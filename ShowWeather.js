@@ -3,7 +3,27 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { weatherTypes } from './WeatherTypes';
 
-const ShowWeather = ({ weather, temperature }) => { //displays the weather
+const ShowWeather = ({ weather, temperature, sunset, sunrise, location }) => { //displays the weather
+    const currentTime = (new Date).getTime(); //gets current time in unix
+    if (currentTime > sunset || currentTime < sunrise) { //tests if its night or not
+        return (
+            <View style={[styles.container, {backgroundColor: '#003366'}]}>
+                <View style={styles.header} >
+                    <Text style={styles.infoText}>Night</Text>
+                    <Text style={styles.infoTextSmall}>It's dark and scary!</Text>
+                </View>
+                
+                <View style={styles.body} >
+                    <Ionicons size={100} name='ios-moon' color={'#fff'} />
+                    <Text style={styles.temp}>{ temperature }˚</Text>
+                </View>
+
+                <View style={styles.footer} >
+                    <Text style={styles.locationText}>{ location }</Text>
+                </View>
+            </View>
+        )
+    } else {
     return (
         <View style={[styles.container, { backgroundColor: weatherTypes[weather].color }]}>
             <View style={styles.header} >
@@ -14,9 +34,14 @@ const ShowWeather = ({ weather, temperature }) => { //displays the weather
                 <Ionicons size={100} name={ weatherTypes[weather].icon } color={'#fff'} />
                 <Text style={styles.temp}>{ temperature }˚</Text>
             </View>
+
+            <View style={styles.footer} >
+                    <Text style={styles.locationText}>{ location }</Text>
+            </View>
                 
         </View>
     );
+    }
 };
 
 const styles = StyleSheet.create({
@@ -32,8 +57,11 @@ const styles = StyleSheet.create({
         flex: 2,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 25,
-        marginBottom: 40
+    },
+    footer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     temp: {
         fontSize: 100,
@@ -46,6 +74,11 @@ const styles = StyleSheet.create({
     infoTextSmall: {
         fontSize: 25,
         color: '#fff'
+    },
+    locationText: {
+        fontSize: 30,
+        color: '#fff'
+
     }
 });
 

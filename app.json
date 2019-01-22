@@ -12,7 +12,16 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+    },
+    "android": {
+      "package": "com.iironaumanen.weatherapp",
+      "versionCode": 1.0,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION", 
+        "ACCESS_FINE_LOCATION"
+      ],
+      "icon": "./assets/icon.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
