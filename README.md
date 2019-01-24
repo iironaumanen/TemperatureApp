@@ -6,4 +6,5 @@ Selecting different location is still to be added.
 User can refresh their weather information with swipe down.
 
 Screenshot of the app:
-![Screenshot of the app](https://github.com/iironaumanen/TemperatureApp/blob/master/assets/screenshot_weatherapp.png =320x551)
+
+<img src="https://github.com/iironaumanen/TemperatureApp/blob/master/assets/screenshot_weatherapp.png" width="320" height="551">
