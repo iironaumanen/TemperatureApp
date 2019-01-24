@@ -16,7 +16,7 @@
         "ACCESS_COARSE_LOCATION", 
         "ACCESS_FINE_LOCATION"
       ],
-      "icon": "./assets/icon.png"
+      "icon": "./assets/app-icon.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
