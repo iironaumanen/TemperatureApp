@@ -40,6 +40,7 @@ export default class App extends React.Component {
     
   }
 
+  //Primary function to be called when updating weather
   getWeather(latitude, longitude) {
     fetch (`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${Key}&units=metric`) //using openweathermap api
       .then(data => data.json())
@@ -69,7 +70,7 @@ export default class App extends React.Component {
 
   render() {
     const { isLoading, weatherType, temperature, sunsetTime, sunriseTime, currentLocation } = this.state;
-    /*return (<SelectLocation></SelectLocation>)*/
+    /*return (<SelectLocation></SelectLocation>)*/   //Program doesn't support selecting location yet
     return (
       
       <View style={styles.container}>

@@ -12,7 +12,7 @@ const ShowWeather = ({ weather, temperature, sunset, sunrise, location, update }
     if (currentTime > sunsetTime || currentTime < sunriseTime) { //tests if its night or not
         return (
             <View style={[styles.container, {backgroundColor: '#003366'}]}>
-                <PTRView onRefresh={ update }>
+                <PTRView onRefresh={ update }>  
                     <View style={styles.header} >
                         <Text style={styles.infoText}>Night</Text>
                         <Text style={styles.infoTextSmall}>It's dark and scary!</Text>
